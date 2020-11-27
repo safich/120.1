@@ -1,10 +1,10 @@
 package com.company;
 
 public class Product {
-    String name;
-    String color;
-    float price;
-    int number;
+    private String name;
+    private String color;
+    private float price;
+    private int number;
 
     public Product(String name, float price, int number) {
         setName(name);
