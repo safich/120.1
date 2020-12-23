@@ -79,7 +79,6 @@ public class UITableModel implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Order o = ordersController.get(rowIndex);
-        Product p = productController.get(rowIndex);
         switch (columnIndex) {
             case 0: return o.getOrderDate();
             case 1: return o.getCustomerName();
@@ -91,7 +90,7 @@ public class UITableModel implements TableModel {
                 return o.getShippingDate();
             }
             case 7: return o.getOrderItems();
-            case 8: return p.getPrice();
+            case 8: return o.getOrderDate();
             default: return null;
             }
     }
