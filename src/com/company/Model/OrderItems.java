@@ -7,7 +7,7 @@ public class OrderItems {
 
     public OrderItems(Product product, float buyPrice, int amount) {
         this.product = product;
-        setBuyPrice(buyPrice);
+        this.buyPrice = buyPrice;
         this.amount = amount;
     }
 
@@ -24,7 +24,7 @@ public class OrderItems {
     }
 
     public void setBuyPrice(float buyPrice) {
-        this.buyPrice = (product.getPrice() * amount);
+        this.buyPrice = buyPrice;
     }
 
     public int getAmount() {
@@ -33,5 +33,10 @@ public class OrderItems {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return product.getName();
     }
 }

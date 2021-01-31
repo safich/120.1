@@ -2,6 +2,7 @@ package com.company.Controller;
 
 import com.company.Controller.Storage.OrdersStorage;
 import com.company.Model.Order;
+import com.company.Model.OrderItems;
 import com.company.Model.OrderStatus;
 
 import java.io.*;
@@ -32,9 +33,13 @@ public class OrdersController {
         oos.close();
     }
 
-    public void add(String customerName, String customerPhone, String deliveryAddress, float discount) {
-        orders.add(new Order(new Date(), customerName, customerPhone, deliveryAddress, discount, OrderStatus.PREPARING));
-
+    public void add(String customerName,
+                    String customerPhone,
+                    String deliveryAddress,
+                    float discount,
+                    ArrayList<OrderItems> orderItems)
+    {
+        orders.add(new Order(customerName, customerPhone, deliveryAddress, discount, orderItems));
     }
 
     public void removeOrder(int i) {
@@ -49,4 +54,7 @@ public class OrdersController {
         return orders.get(i);
     }
 
+    public void addNewOrderItem() {
+
+    }
 }

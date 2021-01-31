@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.Controller.OrdersController;
 import com.company.Controller.ProductController;
+import com.company.Controller.Storage.ProductsStorage;
 import com.company.View.MainFrame;
 
 import java.io.IOException;
@@ -13,11 +14,13 @@ public class Main {
         OrdersController oc = new OrdersController();
         //oc.loadOrders("");
 
-        ProductController pc = new ProductController();
-        //pc.loadProducts("");
+        ProductsStorage productsStorage = new ProductsStorage();
+        ProductController pc = new ProductController(productsStorage);
+        pc.loadProducts("C:\\Files\\products.csv");
 
         MainFrame f = new MainFrame(oc, pc);
         f.setVisible(true);
+        //pc.saveProducts("C:\\Files\\products.csv");
 
         //oc.saveOrders("");
     }

@@ -1,7 +1,6 @@
 package com.company.View.UIModel;
 
 import com.company.Controller.OrdersController;
-
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -10,7 +9,6 @@ import com.company.Model.Order;
 import com.company.Model.OrderItems;
 import com.company.Model.OrderStatus;
 import com.company.Model.Product;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,9 +34,9 @@ public class UITableModel implements TableModel {
             String.class,
             Float.class,
             OrderStatus.class,
-            Date.class,
-            OrderItems.class,
-            Integer.class
+            String.class,
+            String[].class,
+            Double.class
     };
 
     private OrdersController ordersController;
@@ -85,12 +83,12 @@ public class UITableModel implements TableModel {
             case 2: return o.getCustomerPhoneNumber();
             case 3: return o.getDeliveryAddress();
             case 4: return o.getDiscount();
-            case 5: return o.getOrderStatus();
+            case 5: return o.getStringOrderStatus();
             case 6: if (o.getOrderStatus().equals(OrderStatus.SHIPPED)) {
                 return o.getShippingDate();
-            }
-            case 7: return o.getOrderItems();
-            case 8: return o.getOrderDate();
+            } else return null;
+            case 7: return o.getOrderItemsNames();
+            case 8: return o.getOrderItemsPrice();
             default: return null;
             }
     }
@@ -115,8 +113,8 @@ public class UITableModel implements TableModel {
             l.tableChanged(e);
     }
 
-    public void addOrder(String customerName, String customerPhone, String deliveryAddress, float discount) {
-        ordersController.add(customerName, customerPhone, deliveryAddress, discount);
+    public void addOrder(String customerName, String customerPhone, String deliveryAddress, float discount, ArrayList<OrderItems> orderItems) {
+        ordersController.add(customerName, customerPhone, deliveryAddress, discount, orderItems);
         int i = ordersController.getOrdersCount() - 1;
         fireTableModelEvent(new TableModelEvent(this, i, i, TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
     }

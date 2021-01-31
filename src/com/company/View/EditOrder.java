@@ -2,38 +2,32 @@ package com.company.View;
 
 import com.company.Controller.ProductController;
 import com.company.Model.Order;
+import com.company.Model.OrderItems;
 import com.company.Model.OrderStatus;
-import com.company.View.UIModel.UIProductListModel;
-
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class EditOrder extends JDialog implements ListSelectionListener {
+public class EditOrder extends JDialog {
     private JTextField orderDate;
     private JTextField customerName;
     private JTextField customerPhone;
     private JTextField deliveryAddress;
     private JTextField discount;
-
     private OrderStatus status;
-
-    private ProductController pc;
-
-    private UIProductListModel productListModel;
-    private int selectedProduct;
-
+    private ProductController productController;
     private boolean modalResult;
+    private ArrayList<OrderItems> orderItems;
+    private boolean marker;
 
-    public EditOrder(MainFrame owner, ProductController pc) {
+    public EditOrder(MainFrame owner, ProductController productController) {
         super(owner,"Опции заказа", true);
-        this.pc = pc;
-        status = OrderStatus.PREPARING;
-        productListModel = new UIProductListModel(pc);
+        this.productController = productController;
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -72,11 +66,10 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         topPanel.add(p);
 
         p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(new JLabel("Позиции заказа: "));
-        JList<String> l = new JList<>(productListModel);
-        l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        l.setSelectedIndices(new int[productListModel.getSize()]);
-        p.add(l);
+        JButton addMenuButton = new JButton("Выбрать позиции");
+        p.add(addMenuButton);
+        addMenuButton.addActionListener(e -> addItems());
+
         topPanel.add(p);
 
         p = new JPanel();
@@ -87,11 +80,11 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         });
         p.add(btn);
 
-        btn = new JButton("Отмена");
-        btn.addActionListener(e -> {
-            dispose();
-        });
-        p.add(btn);
+//        btn = new JButton("Отмена");
+//        btn.addActionListener(e -> {
+//            dispose();
+//        });
+//        p.add(btn);
 
         topPanel.add(p);
 
@@ -156,11 +149,11 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         });
         p.add(btn);
 
-        btn = new JButton("Отмена");
-        btn.addActionListener(e -> {
-            dispose();
-        });
-        p.add(btn);
+//        btn = new JButton("Отмена");
+//        btn.addActionListener(e -> {
+//            dispose();
+//        });
+//        p.add(btn);
 
         topPanel.add(p);
 
@@ -173,7 +166,6 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         deliveryAddress.setText(order.getDeliveryAddress());
         discount.setText(Float.toString(order.getDiscount()));
         orderDate.setText(order.getOrderDate().toString());
-
         orderDate.setEnabled(false);
     }
 
@@ -181,12 +173,34 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JComboBox b = (JComboBox)e.getSource();
-            String s = (String)b.getSelectedItem();
+            String s = b.getSelectedItem().toString();
             if (s.equals("Готовится")) status = OrderStatus.PREPARING;
             if (s.equals("Отгружен")) status = OrderStatus.SHIPPED;
             if (s.equals("Отменен")) status = OrderStatus.CANCELED;
         }
     };
+
+    public void addItems() {
+        if (!marker) {
+            AddItemsMenu addItemsMenu = new AddItemsMenu(this, productController);
+            addItemsMenu.setLocationRelativeTo(this);
+            addItemsMenu.setVisible(true);
+
+            if (addItemsMenu.isModalResult()) {
+                try {
+                    orderItems = new ArrayList<>();
+                    for (int i = 0; i < addItemsMenu.getProductList().size(); i++) {
+                        orderItems.add(new OrderItems(addItemsMenu.getProductList().get(i),
+                                addItemsMenu.getProductList().get(i).getPrice(), addItemsMenu.getSelectedProductNumber(i)));
+                    }
+                    marker = true;
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        else JOptionPane.showMessageDialog(this, "Позиции уже выбраны");
+    }
 
     public boolean isModalResult() {
         return modalResult;
@@ -212,9 +226,8 @@ public class EditOrder extends JDialog implements ListSelectionListener {
         return status;
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        selectedProduct = ((JList<?>)e.getSource()).getSelectedIndex();
-
+    public ArrayList<OrderItems> getOrderItems() {
+        if (orderItems != null) return orderItems;
+        else return new ArrayList<>();
     }
 }
