@@ -1,27 +1,21 @@
 package com.company;
 
-import com.company.Controller.OrdersController;
+import com.company.Controller.OrderController;
 import com.company.Controller.ProductController;
-import com.company.Controller.Storage.ProductsStorage;
 import com.company.View.MainFrame;
-
 import java.io.IOException;
-import javax.swing.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        OrdersController oc = new OrdersController();
-        //oc.loadOrders("");
+    public static void main(String[] args) throws IOException {
+        OrderController orderController = new OrderController();
+        orderController.start();
 
-        ProductsStorage productsStorage = new ProductsStorage();
-        ProductController pc = new ProductController(productsStorage);
-        pc.loadProducts("C:\\Files\\products.csv");
+        ProductController productController = new ProductController();
+        productController.start();
 
-        MainFrame f = new MainFrame(oc, pc);
-        f.setVisible(true);
-        //pc.saveProducts("C:\\Files\\products.csv");
-
-        //oc.saveOrders("");
+        MainFrame mainFrame = new MainFrame(orderController, productController);
+        mainFrame.setVisible(true);
     }
+
 }

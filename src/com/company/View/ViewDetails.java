@@ -1,28 +1,24 @@
 package com.company.View;
 
-import com.company.Controller.OrdersController;
+import com.company.Controller.OrderController;
 import com.company.Controller.ProductController;
 import com.company.Model.Order;
 import com.company.Model.OrderItems;
 import com.company.Model.Product;
-import com.company.View.UIModel.UIAddItemsMenuModel;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 public class ViewDetails extends JDialog {
     private ProductController productController;
-    private OrdersController ordersController;
+    private OrderController orderController;
     private ArrayList<OrderItems> orderItems;
     private boolean modalResult;
 
-    public ViewDetails(MainFrame owner, Order order, ProductController productController, OrdersController ordersController) {
+    public ViewDetails(MainFrame owner, Order order, ProductController productController, OrderController orderController) {
         super(owner,"Детали заказа", true);
         this.productController = productController;
-        this.ordersController = ordersController;
+        this.orderController = orderController;
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 

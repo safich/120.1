@@ -1,11 +1,7 @@
 package com.company.View;
 
-import com.company.Controller.OrdersController;
 import com.company.Controller.ProductController;
-import com.company.Model.Order;
-import com.company.Model.OrderItems;
 import com.company.Model.Product;
-import com.company.View.UIModel.UIAddItemsMenuModel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

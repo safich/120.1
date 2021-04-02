@@ -1,12 +1,13 @@
 package com.company.Model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Product {
-    private Long vendorCode;
-    private String name;
+public class Product implements Serializable {
+    private final Long vendorCode;
+    private final String name;
     private String color;
-    private float price;
+    private final float price;
     private int number;
 
     public Product(Long vendorCode, String name, String color, float price, int number) {

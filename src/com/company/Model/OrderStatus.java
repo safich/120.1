@@ -1,6 +1,8 @@
 package com.company.Model;
 
-public enum OrderStatus {
+import java.io.Serializable;
+
+public enum OrderStatus implements Serializable {
     PREPARING,
     SHIPPED,
     CANCELED

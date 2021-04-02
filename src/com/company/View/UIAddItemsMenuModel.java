@@ -1,4 +1,4 @@
-package com.company.View.UIModel;
+package com.company.View;
 
 import com.company.Controller.ProductController;
 import com.company.Model.Product;
@@ -60,13 +60,13 @@ public class UIAddItemsMenuModel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Product p = productController.get(rowIndex);
+        Product product = productController.get(rowIndex);
         switch (columnIndex) {
-            case 0: return p.getVendorCode();
-            case 1: return p.getName();
-            case 2: return p.getColor();
-            case 3: return p.getPrice();
-            case 4: return p.getNumber();
+            case 0: return product.getVendorCode();
+            case 1: return product.getName();
+            case 2: return product.getColor();
+            case 3: return product.getPrice();
+            case 4: return product.getNumber();
             default: return null;
         }
     }

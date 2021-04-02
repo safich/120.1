@@ -1,45 +1,37 @@
 package com.company.Controller;
 
-import com.company.Controller.Storage.ProductsStorage;
+import com.company.Model.Storage.ProductsStorage;
 import com.company.Model.Product;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductController {
-    private List<Product> products = new ArrayList<>();
-    private ProductsStorage productsStorage;
+    private final ProductsStorage storage;
 
-    public ProductController (ProductsStorage productsStorage) {
-        this.productsStorage = productsStorage;
+    public ProductController () {
+        storage = new ProductsStorage();
     }
 
-    public void loadProducts(String filePath) throws IOException {
-        productsStorage.loadProducts(filePath, products);
+    public void start() throws IOException {
+        storage.loadProducts();
     }
 
-    public void saveProducts(String filePath) throws IOException {
-        productsStorage.saveProducts(filePath, products);
+    public void end() throws IOException {
+        storage.saveProducts();
     }
 
     public Product get(int i) {
-        return products.get(i);
-    }
-
-    public List<Product> getList() {
-        return products;
+        return storage.getProducts().get(i);
     }
 
     public int getProductsCount() {
-        return products.size();
+        return storage.getProducts().size();
     }
 
     public void reduceProducts(int i, int number) {
-        products.get(i).setNumber(products.get(i).getNumber() - number);
+        storage.getProducts().get(i).setNumber(storage.getProducts().get(i).getNumber() - number);
     }
 
     public void resetProducts(int productIndex, int prevNumber) {
-        products.get(productIndex).setNumber(products.get(productIndex).getNumber() + prevNumber);
+        storage.getProducts().get(productIndex).setNumber(storage.getProducts().get(productIndex).getNumber() + prevNumber);
     }
 }

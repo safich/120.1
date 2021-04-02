@@ -1,6 +1,8 @@
 package com.company.Model;
 
-public class OrderItems {
+import java.io.Serializable;
+
+public class OrderItems implements Serializable {
     private Product product;
     private float buyPrice;
     private int amount;
