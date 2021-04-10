@@ -1,25 +1,29 @@
 package com.company.Model;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
-    private Date orderDate;
+public class Order implements Serializable {
+    private final Date orderDate;
     private String customerName;
     private String customerPhoneNumber;
     private String deliveryAddress;
     private float discount;
     private OrderStatus orderStatus;
     private Date shippingDate;
-    private OrderItems orderItems;
+    private ArrayList<OrderItems> orderItems;
 
-    public Order(Date orderDate, String customerName, String customerPhoneNumber, String deliveryAddress, float discount,
-                 OrderStatus orderStatus) {
-        this.orderDate = new Date();
-        this.customerName = customerName;
-        this.customerPhoneNumber = customerPhoneNumber;
-        this.deliveryAddress = deliveryAddress;
-        this.discount = discount;
+    public Order(String customerName, String customerPhoneNumber, String deliveryAddress, float discount, ArrayList<OrderItems> orderItems) {
         this.orderStatus = OrderStatus.PREPARING;
+        this.orderDate = new Date();
+        setCustomerName(customerName);
+        setCustomerPhoneNumber(customerPhoneNumber);
+        setDeliveryAddress(deliveryAddress);
+        setDiscount(discount);
+        this.orderItems = orderItems;
     }
 
     public Date getOrderDate() {
@@ -70,12 +74,21 @@ public class Order {
         return orderStatus;
         }
 
+    public String getStringOrderStatus() {
+        if (orderStatus.equals(OrderStatus.CANCELED)) return "Отменен";
+        else if (orderStatus.equals(OrderStatus.PREPARING)) return "Готовится";
+        else if (orderStatus.equals(OrderStatus.SHIPPED)) return "Отправлен";
+        return null;
+    }
+
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
-    public Date getShippingDate() {
-        return shippingDate;
+    public String getShippingDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        String date = dateFormat.format(shippingDate);
+        return date;
     }
 
     public void setShippingDate(Date shippingDate) {
@@ -84,12 +97,24 @@ public class Order {
         }
     }
 
-    public OrderItems getOrderItems() {
-        return this.orderItems;
+    public ArrayList<OrderItems> getOrderItems() {
+        return orderItems;
     }
 
-    public void setOrderItems(OrderItems oi) {
-        this.orderItems = oi;
+    public String getOrderItemsNames() {
+        String s = "";
+        for (int i = 0; i < orderItems.size(); i++) {
+            s = s + orderItems.get(i).getProduct().getName() + ", " + orderItems.get(i).getProduct().getColor();
+        }
+        return s;
+    }
+
+    public double getOrderItemsPrice() {
+        float f = 0;
+        for (int i = 0; i < orderItems.size(); i++) {
+            f = f + orderItems.get(i).getBuyPrice();
+        }
+        return f - (f * (discount * 0.01));
     }
 
     @Override

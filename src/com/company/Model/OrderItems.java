@@ -1,13 +1,15 @@
 package com.company.Model;
 
-public class OrderItems {
+import java.io.Serializable;
+
+public class OrderItems implements Serializable {
     private Product product;
     private float buyPrice;
     private int amount;
 
     public OrderItems(Product product, float buyPrice, int amount) {
         this.product = product;
-        setBuyPrice(buyPrice);
+        this.buyPrice = buyPrice;
         this.amount = amount;
     }
 
@@ -24,7 +26,7 @@ public class OrderItems {
     }
 
     public void setBuyPrice(float buyPrice) {
-        this.buyPrice = (product.getPrice() * amount);
+        this.buyPrice = buyPrice;
     }
 
     public int getAmount() {
@@ -33,5 +35,10 @@ public class OrderItems {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return product.getName();
     }
 }

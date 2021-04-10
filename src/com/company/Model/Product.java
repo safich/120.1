@@ -1,13 +1,13 @@
 package com.company.Model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Product {
-
-    private Long vendorCode;
-    private String name;
+public class Product implements Serializable {
+    private final Long vendorCode;
+    private final String name;
     private String color;
-    private float price;
+    private final float price;
     private int number;
 
     public Product(Long vendorCode, String name, String color, float price, int number) {
@@ -30,7 +30,7 @@ public class Product {
         if (color == null) {
             this.color = "";
         }
-        this.color = color;
+        else this.color = color;
     }
 
     public float getPrice() {
@@ -42,7 +42,8 @@ public class Product {
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        if(number < 0) return;
+        else this.number = number;
     }
 
     public Long getVendorCode() {
@@ -64,6 +65,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return name + " " + color + "цена: " + price;
+        return name + " " + color;
     }
 }
